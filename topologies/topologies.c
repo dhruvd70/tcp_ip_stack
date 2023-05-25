@@ -6,7 +6,7 @@
 
 #include "topologies.h"
 
-graph_t* build_generic_topo()
+graph_t* build_generic_topo(void)
 {
 /*
                            +----------+
@@ -34,6 +34,20 @@ graph_t* build_generic_topo()
     graph_insert_link(R0, R1, "eth0/0", "eth0/1",1);
     graph_insert_link(R1, R2, "eth0/2", "eth0/3",1);
     graph_insert_link(R0, R2, "eth0/4", "eth0/5",1);
+// printf("--1\n");
+    node_set_loopback_addr(R0, "127.0.0.1");
+// printf("--2\n");
+    node_set_intf_ip_addr(R0,"eth0/4", "30.1.1.31", 24);
+// printf("--3\n");
+    node_set_intf_ip_addr(R0,"eth0/0", "10.1.1.10", 24);
+// printf("--4\n");
+    node_set_loopback_addr(R1, "127.0.0.2");
+    node_set_intf_ip_addr(R1,"eth0/1", "10.1.1.11", 24);
+    node_set_intf_ip_addr(R1,"eth0/2", "20.1.1.20", 24);
+
+    node_set_loopback_addr(R2, "127.0.0.3");
+    node_set_intf_ip_addr(R2,"eth0/3", "20.1.1.21", 24);
+    node_set_intf_ip_addr(R2,"eth0/5", "30.1.1.30", 24);
 
     return topo;
 }

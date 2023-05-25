@@ -1,24 +1,41 @@
 CC=gcc
 CFLAGS=-g
-TARGET:test.out
+BUILD_DIR=build/
+BIN_DIR=bin/
 
-OBJS=gluethread/glthread.o \
-		graph/graph.o	   \
-		topologies/topologies.o
+OBJS=   $(BUILD_DIR)glthread.o 		\
+		$(BUILD_DIR)graph.o	   		\
+		$(BUILD_DIR)topologies.o	\
+		$(BUILD_DIR)network.o       \
+		$(BUILD_DIR)test_app.o	    
 
-test.out:test_app.o ${OBJS}
-	${CC} ${CFLAGS} test_app.o ${OBJS} -o test.out
+all: $(BUILD_DIR) $(BIN_DIR) tcp_ip_app 
 
-testapp.o:testapp.c
-	${CC} ${CFLAGS} -c test_app.c -o test_app.o
+tcp_ip_app:$(BUILD_DIR)test_app.o ${OBJS}
+	${CC} ${CFLAGS} ${OBJS} -o $(BIN_DIR)tcp_ip_app
 
-gluethread/glthread.o:gluethread/glthread.c
-	${CC} ${CFLAGS} -c -I gluethread gluethread/glthread.c -o gluethread/glthread.o
-graph.o:graph/graph.c
-	${CC} ${CFLAGS} -c -I . graph/graph.c -o graph/graph.o
-topologies.o:topologies/topologies.c
-	${CC} ${CFLAGS} -c -I . topologies/topologies.c -o topologies/topologies.o
+$(BUILD_DIR)test_app.o:test_app.c
+	${CC} ${CFLAGS} -c -I . test_app.c -o $(BUILD_DIR)test_app.o
 
+$(BUILD_DIR)glthread.o:gluethread/glthread.c
+	${CC} ${CFLAGS} -c -I . gluethread/glthread.c -o $(BUILD_DIR)glthread.o
+
+$(BUILD_DIR)graph.o:graph/graph.c
+	${CC} ${CFLAGS} -c -I . graph/graph.c -o $(BUILD_DIR)graph.o
+
+$(BUILD_DIR)topologies.o:topologies/topologies.c
+	${CC} ${CFLAGS} -c -I . topologies/topologies.c -o $(BUILD_DIR)topologies.o
+
+$(BUILD_DIR)network.o:network/network.c
+	${CC} ${CFLAGS} -c -I . network/network.c -o $(BUILD_DIR)network.o
+
+$(BUILD_DIR):
+	mkdir $(BUILD_DIR)
+
+$(BIN_DIR):
+	mkdir $(BIN_DIR)
+
+.PHONY: clean
 clean:
-	rm **/*.o
-	rm test.out test_app.o
+	rm -rf build bin
+	

@@ -38,10 +38,10 @@ void graph_insert_link(node_t* pNode_1, node_t* pNode_2, char* intf_from, char* 
     int empty_intf_slot;
     link_t *link = (link_t *)calloc(1, sizeof(link_t));
 
-    strncpy(link->intf_1.if_name, intf_from, INTF_NAME_SIZE);
-    link->intf_1.if_name[INTF_NAME_SIZE - 1] = '\0';
-    strncpy(link->intf_2.if_name, intf_to, INTF_NAME_SIZE);
-    link->intf_2.if_name[INTF_NAME_SIZE - 1] = '\0';
+    strncpy(link->intf_1.intf_name, intf_from, INTF_NAME_SIZE);
+    link->intf_1.intf_name[INTF_NAME_SIZE - 1] = '\0';
+    strncpy(link->intf_2.intf_name, intf_to, INTF_NAME_SIZE);
+    link->intf_2.intf_name[INTF_NAME_SIZE - 1] = '\0';
 
     link->intf_1.link = link;
     link->intf_2.link = link;
@@ -55,7 +55,13 @@ void graph_insert_link(node_t* pNode_1, node_t* pNode_2, char* intf_from, char* 
 
     empty_intf_slot = get_node_intf_avail_slot(pNode_2);
     pNode_2->intf[empty_intf_slot] = &link->intf_2;
-   
+
+    init_nw_intf_prop(&link->intf_1.intf_nw_cfg);
+    init_nw_intf_prop(&link->intf_2.intf_nw_cfg);
+
+    assign_mac_to_intf(&link->intf_1);
+    assign_mac_to_intf(&link->intf_2);
+
 }
 
 void dump_graph(graph_t *graph)
@@ -82,17 +88,15 @@ void dump_node(node_t *node)
         intf = node->intf[i];
         if(!intf) break;
         dump_interface(intf);
-        printf("\n");
     }
+    printf("\n");
 }
 
 void dump_interface(interface_t *interface)
 {
-   link_t *link = interface->link;
-   node_t *nbr_node = get_nbr_node(interface);
-   printf(" LOCAL NODE = %s\t INTF NAME = %s\tNBR NODE = %s\t COST = %u\n", interface->if_name,
-                                                                              nbr_node->node_name, 
-                                                                              interface->att_node->node_name,   
-                                                                              link->cost);
+    link_t *link = interface->link;
+    node_t *nbr_node = get_nbr_node(interface);
+    printf("\tINTF NAME = %s\t NBR NODE = %s\tCOST = %u\n", interface->intf_name,
+                                                           nbr_node->node_name, 
+                                                           link->cost);
 }
-

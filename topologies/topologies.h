@@ -4,7 +4,12 @@
 * 
 */
 
+#ifndef __NET_PARAMS__
+#define __NET_PARAMS__
+
 #include "../graph/graph.h"
+#include "../network/network.h"
 
+graph_t* build_generic_topo(void);
 
-graph_t* build_generic_topo();
+#endif

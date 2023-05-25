@@ -9,10 +9,9 @@
 
 #include "../common.h"
 #include "../gluethread/glthread.h"
+#include "net_params.h"
 
 #include <assert.h>
-
-
 
 #define INTF_NAME_SIZE          16
 #define NODE_NAME_SIZE          16
@@ -25,9 +24,10 @@ typedef struct node_ node_t;
 
 typedef struct interface_
 {
-    char if_name[INTF_NAME_SIZE];
+    char intf_name[INTF_NAME_SIZE];
     struct node_ *att_node;
     struct link_ *link;
+    intf_nw_prop_t intf_nw_cfg;
 }interface_t;
 
 struct link_
@@ -41,6 +41,7 @@ struct node_
 {
     char node_name[NODE_NAME_SIZE];
     interface_t *intf[MAX_INTF_PER_NODE];
+    node_nw_prop_t node_nw_cfg;
     glthread_t graph_glue;
 };
 
@@ -49,6 +50,8 @@ typedef struct graph_
     char topo_name[TOPO_NAME_SIZE];
     glthread_t node_list;
 }graph_t;
+
+void assign_mac_to_intf(interface_t *intf); //Forward declaring func to prevent recursive calling of .h
 
 GLTHREAD_TO_STRUCT(graph_glue_to_node, node_t, graph_glue);
 
@@ -98,7 +101,7 @@ static inline interface_t* get_node_intf_by_name(node_t* pNode, char* intf_name)
         if(!intf) {
             return NULL;
         }
-        if(strncmp(intf->if_name, intf_name, INTF_NAME_SIZE) == 0) {
+        if(strncmp(intf->intf_name, intf_name, INTF_NAME_SIZE) == 0) {
             return intf;
         }
     }
