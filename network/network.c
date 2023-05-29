@@ -5,31 +5,18 @@
 */
 
 #include "network.h"
+#include <time.h>
 
-static unsigned int hash_code(void *ptr, unsigned int size)
+void assign_mac_to_intf(interface_t *intf) 
 {
-    unsigned int value=0, i =0;
-    char *str = (char*)ptr;
-    while(i < size) {
-        value += *str;
-        value*=97;
-        str++;
-        i++;
-    }
-    return value;
-}
+    static int counter = 0;
+    char temp[15];
+    srand(time(NULL) + counter);  // Initialize random seed with time and counter
+    sprintf(temp, "%X%X%X%X%X%X",rand() % 256, rand() % 256, rand() % 256,
+                                 rand() % 256, rand() % 256, rand() % 256);
+    memcpy(IF_MAC(intf), &temp, MAC_ADDR_SIZE);
 
-void assign_mac_to_intf(interface_t *intf)
-{
-    unsigned int hash_code_val = 0;
-    node_t *pNode = intf->att_node;
-    if(!pNode) {
-        return;
-    }
-    hash_code_val = hash_code(pNode->node_name, NODE_NAME_SIZE);
-    hash_code_val *= hash_code(intf->intf_name, INTF_NAME_SIZE);
-    memset(&intf->intf_nw_cfg.mac_addr, 0, sizeof(MAC_ADDR_SIZE));
-    memcpy(&intf->intf_nw_cfg.mac_addr, (char *)&hash_code_val, sizeof(MAC_ADDR_SIZE));
+    counter++;
 }
 
 bool node_set_loopback_addr(node_t *pNode, char *lb_addr)

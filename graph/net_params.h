@@ -8,7 +8,7 @@
 #include "../common.h"
 
 #define IP_ADDR_SIZE        16
-#define MAC_ADDR_SIZE        8
+#define MAC_ADDR_SIZE        6
 
 
 typedef struct ip_addr_
