@@ -28,7 +28,7 @@ int main()
     
     interface_t* sintf = get_node_intf_by_name(snode, "eth0/0");
     char msg[] = "hello from dhruv";
-    printf("RC = %x\n",send_pkt_out(msg, sizeof(msg), sintf));
+    printf("RC = %d\n",send_pkt_out(msg, sizeof(msg), sintf));
     
     start_shell();
 
