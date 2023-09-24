@@ -7,7 +7,7 @@
 #include "graph/graph.h"
 #include "topologies/topologies.h"
 #include "network/network.h"
-#include "CommandParser/libcli.h"
+#include "Command_Parser/libcli.h"
 
 #include "common.h"
 

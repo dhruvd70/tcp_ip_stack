@@ -3,8 +3,8 @@
 * @author:      Dhruv Dohare(dhruv.dohare04@gmail.com)
 * 
 */
-#include "CommandParser/libcli.h"
-#include "CommandParser/cmdtlv.h"
+#include "Command_Parser/libcli.h"
+#include "Command_Parser/cmdtlv.h"
 #include "graph/graph.h"
 #include "cmdcodes.h"
 

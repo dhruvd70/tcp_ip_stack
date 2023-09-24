@@ -3,7 +3,7 @@ CFLAGS=-g
 BUILD_DIR=build/
 BUILD_DIRS=dir
 BIN_DIR=bin/
-LIBS=-lpthread -L ./CommandParser -lcli
+LIBS=-lpthread -L ./Command_Parser -lcli
 
 OBJS=   $(BUILD_DIR)comm.o			\
 		$(BUILD_DIR)nwcli.o			\
@@ -15,7 +15,7 @@ OBJS=   $(BUILD_DIR)comm.o			\
 
 all: $(BUILD_DIRS) tcp_ip_app 
 
-tcp_ip_app:$(BUILD_DIR)test_app.o ${OBJS} CommandParser/libcli.a
+tcp_ip_app:$(BUILD_DIR)test_app.o ${OBJS} Command_Parser/libcli.a
 	${CC} ${CFLAGS} ${OBJS} -o $(BIN_DIR)tcp_ip_app ${LIBS}
 	@echo
 	@echo BUILD COMPLETE!!
@@ -46,10 +46,10 @@ $(BUILD_DIRS):
 	@mkdir -p $(BUILD_DIR)
 	@mkdir -p $(BIN_DIR)
 
-CommandParser/libcli.a:
-	(cd CommandParser; make)
+Command_Parser/libcli.a:
+	(cd Command_Parser; make)
 
 .PHONY: clean
 clean:
 	rm -rf build bin
-	(cd CommandParser; make clean)
+	(cd Command_Parser; make clean)
