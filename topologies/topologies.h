@@ -9,6 +9,7 @@
 
 #include "../graph/graph.h"
 #include "../network/network.h"
+#include "../comm/comm.h"
 
 graph_t* build_generic_topo(void);
 

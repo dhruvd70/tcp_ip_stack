@@ -49,5 +49,6 @@ graph_t* build_generic_topo(void)
     node_set_intf_ip_addr(R2,"eth0/3", "20.1.1.21", 24);
     node_set_intf_ip_addr(R2,"eth0/5", "30.1.1.30", 24);
 
+    network_start_pkt_rx_thread(topo);
     return topo;
 }

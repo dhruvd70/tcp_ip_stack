@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <memory.h>
 
+extern void init_udp_socket(node_t* node);
 
 node_t* graph_add_node(graph_t* graph, char* node_name)
 {
@@ -18,6 +19,8 @@ node_t* graph_add_node(graph_t* graph, char* node_name)
     strncpy(node->node_name, node_name, NODE_NAME_SIZE);
     node->node_name[NODE_NAME_SIZE - 1] = '\0';
 
+    init_udp_socket(node);
+    
     init_glthread(&node->graph_glue);
     glthread_add_next(&graph->node_list, &node->graph_glue);
     return node;

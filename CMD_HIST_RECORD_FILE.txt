@@ -1,2 +1,16 @@
 show help
 show topology
+.
+cls
+show topology
+.
+show help
+show topology
+show topology
+show topology
+show help
+show topology
+show topology
+show topology
+show topology
+show help
