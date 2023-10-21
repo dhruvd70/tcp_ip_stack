@@ -40,6 +40,14 @@ typedef struct intf_nw_prop_
     char mask_val;
 }intf_nw_prop_t;
 
+static inline void
+init_node_nw_prop(node_nw_prop_t *node_nw_prop) {
+
+    node_nw_prop->hw_type = 0;
+    node_nw_prop->b_lb_addr_cfg = false;
+    memset(node_nw_prop->lb_ip_addr.ip_addr, 0, 16);
+}
+
 static void init_nw_intf_prop(intf_nw_prop_t *intf_nw_prop)
 {
     memset(intf_nw_prop->mac_addr.mac_addr, 0, MAC_ADDR_SIZE);

@@ -27,9 +27,9 @@ graph_t* build_generic_topo(void)
 */
 
     graph_t *topo = graph_create_new("GENERIC GRAPH");
-    node_t *R0 = graph_add_node(topo, "R0");
-    node_t *R1 = graph_add_node(topo, "R1");
-    node_t *R2 = graph_add_node(topo, "R2");
+    node_t *R0 = graph_add_node(topo, "R0_re");
+    node_t *R1 = graph_add_node(topo, "R1_re");
+    node_t *R2 = graph_add_node(topo, "R2_re");
 
     graph_insert_link(R0, R1, "eth0/0", "eth0/1",1);
     graph_insert_link(R1, R2, "eth0/2", "eth0/3",1);

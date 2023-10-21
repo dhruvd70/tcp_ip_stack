@@ -12,6 +12,7 @@
 #include <memory.h>
 #include <errno.h>
 #include <netdb.h> 
+#include <arpa/inet.h>
 
 #include "../common.h"
 #include "../graph/graph.h"

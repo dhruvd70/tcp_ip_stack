@@ -16,6 +16,14 @@ unsigned int get_next_udp_port_number()
     return udp_port_number++;
 }
 
+void print_buff(char *buff, int len)
+{
+    for(int i=0;i<len;i++) {
+        printf("%c",buff[i]);
+    }
+    printf("\n");
+}
+
 //Entry point into data link layer from physical layer
 int pkt_rx(node_t* rx_node, interface_t* intf, char* pkt,
                     unsigned int pkt_size)
@@ -48,7 +56,7 @@ static int _send_pkt_out(int sock_fd, char* pkt_data, unsigned int pkt_size,
     struct hostent* host= (struct hostent*)gethostbyname("127.0.0.1");
     dest_addr.sin_family = AF_INET;
     dest_addr.sin_port   = dest_port_number;
-    dest_addr.sin_addr   = *((struct in_addr*)host->h_addr_list);
+    dest_addr.sin_addr.s_addr  = inet_addr("127.0.0.1");
 
     rc = sendto(sock_fd, pkt_data, pkt_size, 0, (struct sockaddr *)&dest_addr, 
                 sizeof(struct sockaddr));
@@ -103,7 +111,6 @@ void init_udp_socket(node_t* node)
         return;
     }
     node->udp_socket_fd = udp_sock_fd;
-    printf("UDP SOCKET CREATED FOR NODE %s, FD = %d\n", node->node_name, node->udp_socket_fd);
 }
 
 static void* rx_pkt_thread_func(void* arg)
@@ -137,7 +144,6 @@ static void* rx_pkt_thread_func(void* arg)
     while(1) {
         memcpy(&active_sock_fd_set, &backup_sock_fd_set, sizeof(fd_set));
         select(sock_max_fd + 1, &active_sock_fd_set, NULL, NULL, NULL);
-        printf("-----1\n");
 
         ITERATE_GLTHREAD_BEGIN(&topo->node_list, curr) {
             node = graph_glue_to_node(curr);
