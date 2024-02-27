@@ -1,4 +1,5 @@
 CC=gcc
+DB=gdb
 CFLAGS=-g
 BUILD_DIR=build/
 BUILD_DIRS=dir
@@ -19,7 +20,6 @@ tcp_ip_app:$(BUILD_DIR)test_app.o ${OBJS} Command_Parser/libcli.a
 	${CC} ${CFLAGS} ${OBJS} -o $(BIN_DIR)tcp_ip_app ${LIBS}
 	@echo
 	@echo BUILD COMPLETE!!
-	@echo execute ./bin/tcp_ip_app to start the app
 
 $(BUILD_DIR)test_app.o:test_app.c
 	${CC} ${CFLAGS} -c -I . test_app.c -o $(BUILD_DIR)test_app.o
@@ -49,7 +49,14 @@ $(BUILD_DIRS):
 Command_Parser/libcli.a:
 	(cd Command_Parser; make)
 
+debug: $(BUILD_DIRS) tcp_ip_app
+	${DB} ./bin/tcp_ip_app
+
+run: $(BUILD_DIRS) tcp_ip_app
+	./bin/tcp_ip_app
+
 .PHONY: clean
 clean:
 	rm -rf build bin
+	rm -f *.txt
 	(cd Command_Parser; make clean)
