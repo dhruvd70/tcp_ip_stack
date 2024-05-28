@@ -13,4 +13,6 @@
 
 graph_t* build_generic_topo(void);
 
+graph_t* build_linear_topo(void);
+
 #endif

@@ -33,7 +33,8 @@ bool node_set_loopback_addr(node_t *pNode, char *lb_addr)
 bool node_set_intf_ip_addr(node_t *pNode, char *local_intf, char *ip_addr, char mask)
 {
     interface_t *intf = get_node_intf_by_name(pNode, local_intf);
-
+    assert(intf);
+    
     intf->intf_nw_cfg.b_ip_addr_cfg = true;
     strncpy(IF_IP(intf), ip_addr, IP_ADDR_SIZE);
     IF_IP(intf)[IP_ADDR_SIZE - 1] = '\0';

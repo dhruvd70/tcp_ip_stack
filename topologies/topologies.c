@@ -52,3 +52,27 @@ graph_t* build_generic_topo(void)
     network_start_pkt_rx_thread(topo);
     return topo;
 }
+
+graph_t* build_linear_topo(void)
+{
+    graph_t *topo = graph_create_new("LINEAR GRAPH");
+    node_t *H1 = graph_add_node(topo, "H1");
+    node_t *H2 = graph_add_node(topo, "H2");
+    node_t *H3 = graph_add_node(topo, "H3");
+
+    graph_insert_link(H1, H2, "eth0/1", "eth0/2",1);
+    graph_insert_link(H2, H3, "eth0/3", "eth0/4",1);
+
+    node_set_loopback_addr(H1, "122.1.1.1");
+    node_set_intf_ip_addr(H1,"eth0/1", "10.1.1.1", 24);
+
+    node_set_loopback_addr(H2, "122.1.1.2");
+    node_set_intf_ip_addr(H2,"eth0/2", "10.1.1.2", 24);
+    node_set_intf_ip_addr(H2,"eth0/3", "20.1.1.2", 24);
+
+    node_set_loopback_addr(H3, "122.1.1.3");
+    node_set_intf_ip_addr(H3,"eth0/4", "20.1.1.1", 24);
+
+    network_start_pkt_rx_thread(topo);
+    return topo;    
+}
