@@ -27,7 +27,7 @@ bool node_set_loopback_addr(node_t *pNode, char *lb_addr)
     strncpy(NODE_LB_ADDR(pNode), lb_addr, IP_ADDR_SIZE);
     NODE_LB_ADDR(pNode)[IP_ADDR_SIZE - 1] = '\0';
 
-    return true;
+    return TRUE;
 }
 
 bool node_set_intf_ip_addr(node_t *pNode, char *local_intf, char *ip_addr, char mask)
@@ -40,12 +40,12 @@ bool node_set_intf_ip_addr(node_t *pNode, char *local_intf, char *ip_addr, char 
     IF_IP(intf)[IP_ADDR_SIZE - 1] = '\0';
     intf->intf_nw_cfg.mask_val = mask;
 
-    return true;
+    return TRUE;
 }
 
 bool node_unset_intf_ip_addr(node_t *pNode, char *local_intf)
 {
-    return false;
+    return FALSE;
 }
 
 void dump_intf_nw_prop(interface_t *intf)
@@ -95,4 +95,28 @@ void dump_nw_graph(graph_t *graph)
         printf("\n");
     }
     ITERATE_GLTHREAD_END(&graph->node_list, curr);
+}
+
+char *pkt_buffer_shift_right(char *pkt, unsigned int pkt_size, unsigned int total_buffer_size)
+{
+    char *temp = NULL;
+    bool_e temp_mem_req = FALSE;
+
+    if(pkt_size * 2 > total_buffer_size) {
+        temp_mem_req = TRUE;
+    }
+
+    if(temp_mem_req) {
+        temp = calloc(1, pkt_size);
+        memcpy(temp, pkt, pkt_size);
+        memset(pkt, 0, total_buffer_size);
+        memcpy(pkt + (total_buffer_size - pkt_size), temp, pkt_size);
+        free(temp);
+
+        return (pkt +(total_buffer_size - pkt_size));
+    }
+    memcpy(pkt + (total_buffer_size - pkt_size), pkt, pkt_size);
+    memset(pkt, 0, pkt_size);
+
+    return (pkt +(total_buffer_size - pkt_size));
 }

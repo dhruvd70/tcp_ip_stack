@@ -5,6 +5,7 @@
 */
 
 #include "comm.h"
+// #include "../layer_2/layer_2.h"
 
 static unsigned int udp_port_number = 40000;
 
@@ -24,11 +25,16 @@ void print_buff(char *buff, int len)
     printf("\n");
 }
 
+// extern void layer2_frame_rx(node_t *rx_node, interface_t *intf, char *pkt, unsigned int pkt_size);
+
 //Entry point into data link layer from physical layer
 int pkt_rx(node_t* rx_node, interface_t* intf, char* pkt,
                     unsigned int pkt_size)
 {
-    printf("MSG RX = %s, NODE = %s, INTF = %s\n", pkt, rx_node->node_name, intf->intf_name);
+    // printf("MSG RX = %s, NODE = %s, INTF = %s\n", pkt, rx_node->node_name, intf->intf_name);
+    pkt = pkt_buffer_shift_right(pkt, pkt_size, MAX_PKT_BUFF_SIZE - INTF_NAME_SIZE);
+
+    layer2_frame_rx(rx_node, intf, pkt, pkt_size);
     return 0;
 }
 

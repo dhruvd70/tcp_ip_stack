@@ -17,7 +17,7 @@
 typedef struct ethernet_hdr_{
     mac_addr_t dest_mac_addr;
     mac_addr_t src_mac_addr;
-    short int type;
+    unsigned short type;
     char payload[248];
     unsigned int FCS;    
 }ethernet_hdr_t;
