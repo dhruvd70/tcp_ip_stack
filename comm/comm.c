@@ -25,7 +25,7 @@ void print_buff(char *buff, int len)
     printf("\n");
 }
 
-// extern void layer2_frame_rx(node_t *rx_node, interface_t *intf, char *pkt, unsigned int pkt_size);
+extern void layer2_frame_rx(node_t *rx_node, interface_t *intf, char *pkt, unsigned int pkt_size);
 
 //Entry point into data link layer from physical layer
 int pkt_rx(node_t* rx_node, interface_t* intf, char* pkt,

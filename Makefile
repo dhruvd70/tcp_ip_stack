@@ -6,7 +6,8 @@ BUILD_DIRS=dir
 BIN_DIR=bin/
 LIBS=-lpthread -L ./Command_Parser -lcli
 
-OBJS=   $(BUILD_DIR)comm.o			\
+OBJS=   $(BUILD_DIR)layer_2.o		\
+		$(BUILD_DIR)comm.o			\
 		$(BUILD_DIR)nwcli.o			\
 		$(BUILD_DIR)glthread.o 		\
 		$(BUILD_DIR)graph.o	   		\
@@ -41,6 +42,9 @@ $(BUILD_DIR)nwcli.o:nwcli.c
 
 $(BUILD_DIR)comm.o:comm/comm.c
 	${CC} ${CFLAGS} -c -I . comm/comm.c -o $(BUILD_DIR)comm.o
+
+$(BUILD_DIR)layer_2.o:layer_2/layer_2.c
+	${CC} ${CFLAGS} -c -I . layer_2/layer_2.c -o $(BUILD_DIR)layer_2.o
 
 $(BUILD_DIRS):
 	@mkdir -p $(BUILD_DIR)

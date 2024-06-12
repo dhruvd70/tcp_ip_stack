@@ -8,7 +8,6 @@
 #define __LAYER_2__
 
 #include "../utils/utils.h"
-#include "../graph/net_params.h"
 #include "../graph/graph.h"
 #include "../gluethread/glthread.h"
 
