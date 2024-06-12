@@ -40,6 +40,8 @@ typedef struct intf_nw_prop_
     char mask_val;
 }intf_nw_prop_t;
 
+#define IS_INTF_L3_MODE(intf_ptr) (intf_ptr->intf_nw_cfg.b_ip_addr_cfg == TRUE)
+
 static inline void
 init_node_nw_prop(node_nw_prop_t *node_nw_prop) {
 
