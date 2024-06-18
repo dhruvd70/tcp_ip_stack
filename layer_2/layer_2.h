@@ -13,6 +13,18 @@
 
 #pragma pack(push,1) //to prevent padding bytes added by compiler
 
+typedef struct arp_hdr_{
+    short hw_type;              // 1 for ethernet 
+    short protocol_type;        // 0x0800 for IPv4
+    char hw_addr_len;           // 6-bytes for MAC
+    char protocol_addr_len;     // 4-bytes for IPv4
+    short op_code;              // 1->REQ : 2->REPLY
+    mac_addr_t src_mac_addr;    // MAC of OIF
+    unsigned int src_ip_addr;   // IP of OIF
+    mac_addr_t dest_mac_addr;   // MAC of dest node or broadcast
+    unsigned int dest_ip_addr;  // IP for which ARP is being resolved
+}arp_hdr_t;
+
 typedef struct ethernet_hdr_{
     mac_addr_t dest_mac_addr;
     mac_addr_t src_mac_addr;
@@ -22,6 +34,21 @@ typedef struct ethernet_hdr_{
 }ethernet_hdr_t;
 
 #pragma pack(pop)
+
+typedef struct arp_table_ {
+
+    glthread_t arp_entries;
+}arp_table_t;;
+
+
+typedef struct arp_entry_ {
+
+    ip_addr_t ip_addr; //KEY
+    mac_addr_t mac_addr;
+    char out_intf[INTF_NAME_SIZE];
+    glthread_t glue;
+}arp_entry_t;
+
 
 #define ETH_HDR_SIZE_EXCL_PAYLOAD (sizeof(ethernet_hdr_t) - sizeof(((ethernet_hdr_t *)0)->payload))
 
