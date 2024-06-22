@@ -9,11 +9,13 @@
 
 #include "../common.h"
 #include "../graph/graph.h"
+#include "../utils/utils.h"
 // #include "graph/net_params.h"
 
 #define IF_MAC(pIntf)           ((pIntf)->intf_nw_cfg.mac_addr.mac_addr)
 #define IF_IP(pIntf)            ((pIntf)->intf_nw_cfg.ip_addr.ip_addr)
 #define NODE_LB_ADDR(pNode)     ((pNode)->node_nw_cfg.lb_ip_addr.ip_addr)
+#define NODE_ARP_TABLE(pNode)   ((pNode)->node_nw_cfg.arp_table)
 
 bool node_set_loopback_addr(node_t *pNode, char *lb_addr);
 
@@ -32,5 +34,7 @@ unsigned int convert_ip_from_str_to_int(char *ip_addr);
 void convert_ip_from_int_to_str(unsigned int ip_addr, char *output_buffer);
 
 char *pkt_buffer_shift_right(char *pkt, unsigned int pkt_size, unsigned int total_buffer_size);
+
+interface_t *get_matching_subnet_intf(node_t *node, char *ip_addr);
 
 #endif

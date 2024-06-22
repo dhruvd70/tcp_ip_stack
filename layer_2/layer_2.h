@@ -46,9 +46,10 @@ typedef struct arp_entry_ {
     ip_addr_t ip_addr; //KEY
     mac_addr_t mac_addr;
     char out_intf[INTF_NAME_SIZE];
-    glthread_t glue;
+    glthread_t arp_glue;
 }arp_entry_t;
 
+GLTHREAD_TO_STRUCT(arp_glue_to_arp_entry, arp_entry_t, arp_glue);
 
 #define ETH_HDR_SIZE_EXCL_PAYLOAD (sizeof(ethernet_hdr_t) - sizeof(((ethernet_hdr_t *)0)->payload))
 
@@ -90,6 +91,22 @@ static inline bool_e l2_frame_qualifier_on_interface(interface_t *intf, ethernet
     return FALSE;
 }
 
+//initialize the arp table druing node creation
+void init_arp_table(arp_table_t **arp_table);
 
+//add new entry to arp table
+bool_e arp_table_entry_add(arp_table_t *arp_table, arp_entry_t *arp_entry);
+
+//lookup entry in arp table with ip addr as key
+arp_entry_t *arp_table_entry_lookup(arp_table_t *arp_table, char *ip_addr);
+
+//update an arp table entry
+void arp_table_entry_update_from_reply(arp_table_t *arp_table, arp_hdr_t *arp_hdr, interface_t *intf);
+
+//delete arp table entry
+void arp_table_entry_delete(arp_table_t *arp_table, char *ip_addr);
+
+
+void send_arp_broadcast_request(node_t *node, interface_t *out_intf, char *ip_addr);
 
 #endif // __LAYER_2__

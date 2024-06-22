@@ -120,3 +120,37 @@ char *pkt_buffer_shift_right(char *pkt, unsigned int pkt_size, unsigned int tota
 
     return (pkt +(total_buffer_size - pkt_size));
 }
+
+interface_t *get_matching_subnet_intf(node_t *node, char *ip_addr)
+{
+    interface_t *intf;
+    char *intf_addr = NULL;
+    char mask;
+    char intf_subnet[16];
+    char subnet[16];
+
+    for(int i=0; i<MAX_INTF_PER_NODE; i++) {
+        intf = node->intf[i];
+        
+        if(!intf) {
+            return NULL;
+        }
+        if(intf->intf_nw_cfg.b_ip_addr_cfg == FALSE) {
+            continue;
+        }
+
+        intf_addr = IF_IP(intf);
+        mask = intf->intf_nw_cfg.mask_val;
+
+        memset(intf_subnet, 0, 16);
+        memset(subnet, 0, 16);
+        
+        apply_mask(intf_addr, mask, intf_subnet);
+        apply_mask(ip_addr, mask, subnet);
+
+        if(strncmp(intf_subnet, subnet, 16) == 0) {
+            return intf;
+        }
+    }
+    return NULL;
+}

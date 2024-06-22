@@ -21,9 +21,14 @@ typedef struct mac_addr_
     char mac_addr[MAC_ADDR_SIZE];
 }mac_addr_t;
 
+//forward declaration
+typedef struct arp_table_ arp_table_t;
 typedef struct node_nw_prop_
 {
     unsigned int hw_type;
+    /*L2 Property*/
+    arp_table_t *arp_table;
+
     /*L3 Property*/
     bool b_lb_addr_cfg;         /*true if lb addr is present*/
     ip_addr_t lb_ip_addr;
@@ -42,12 +47,15 @@ typedef struct intf_nw_prop_
 
 #define IS_INTF_L3_MODE(intf_ptr) (intf_ptr->intf_nw_cfg.b_ip_addr_cfg == TRUE)
 
+extern void init_arp_table(arp_table_t **arp_table);
+
 static inline void
 init_node_nw_prop(node_nw_prop_t *node_nw_prop) {
 
     node_nw_prop->hw_type = 0;
     node_nw_prop->b_lb_addr_cfg = false;
     memset(node_nw_prop->lb_ip_addr.ip_addr, 0, 16);
+    init_arp_table(&(node_nw_prop->arp_table));
 }
 
 static void init_nw_intf_prop(intf_nw_prop_t *intf_nw_prop)
