@@ -32,10 +32,10 @@ void apply_mask(char *prefix, char mask, char *str_prefix)
 
 void l2_fill_broadcast_mac(char *mac_arr)
 {
-    mac_arr[0] = 0xff;
-    mac_arr[1] = 0xff;
-    mac_arr[2] = 0xff;
-    mac_arr[3] = 0xff;
-    mac_arr[4] = 0xff;
-    mac_arr[5] = 0xff;
+    mac_arr[0] = 0xFF;
+    mac_arr[1] = 0xFF;
+    mac_arr[2] = 0xFF;
+    mac_arr[3] = 0xFF;
+    mac_arr[4] = 0xFF;
+    mac_arr[5] = 0xFF;
 }

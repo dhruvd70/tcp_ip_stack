@@ -21,6 +21,7 @@ node_t* graph_add_node(graph_t* graph, char* node_name)
 
     init_udp_socket(node);
     
+    init_node_nw_prop(&node->node_nw_cfg);
     init_glthread(&node->graph_glue);
     glthread_add_next(&graph->node_list, &node->graph_glue);
     return node;
@@ -99,7 +100,10 @@ void dump_interface(interface_t *interface)
 {
     link_t *link = interface->link;
     node_t *nbr_node = get_nbr_node(interface);
-    printf("\tINTF NAME = %s\t NBR NODE = %s\tCOST = %u\n", interface->intf_name,
+    printf("\tINTF NAME = %s\t NBR NODE = %s\tCOST = %u\t IP ADDR = %s\n", interface->intf_name,
                                                            nbr_node->node_name, 
-                                                           link->cost);
+                                                           link->cost,
+    (interface->intf_nw_cfg.b_ip_addr_cfg) ? ((char*)interface->intf_nw_cfg.ip_addr.ip_addr) : "NOT CONFIGURED");
+
+                                                           
 }

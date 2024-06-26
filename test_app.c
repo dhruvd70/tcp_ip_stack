@@ -18,8 +18,8 @@ graph_t* topo = NULL;
 int main()
 {
     nw_init_cli();
-    // topo = build_generic_topo();
-    topo = build_linear_topo();
+    topo = build_generic_topo();
+    // topo = build_linear_topo();
     if (!topo) {
         printf("TOPOLOGY INITIALIZATION FAILED!\n");
         return 0;

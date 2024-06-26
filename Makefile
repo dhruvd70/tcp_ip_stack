@@ -13,6 +13,7 @@ OBJS=   $(BUILD_DIR)layer_2.o		\
 		$(BUILD_DIR)graph.o	   		\
 		$(BUILD_DIR)topologies.o	\
 		$(BUILD_DIR)network.o       \
+		$(BUILD_DIR)utils.o 		\
 		$(BUILD_DIR)test_app.o
 
 all: $(BUILD_DIRS) tcp_ip_app 
@@ -40,6 +41,9 @@ $(BUILD_DIR)network.o:network/network.c
 $(BUILD_DIR)nwcli.o:nwcli.c
 	${CC} ${CFLAGS} -c -I . nwcli.c -o $(BUILD_DIR)nwcli.o
 
+$(BUILD_DIR)utils.o:utils/utils.c
+	${CC} ${CFLAGS} -c -I . utils/utils.c -o $(BUILD_DIR)utils.o
+
 $(BUILD_DIR)comm.o:comm/comm.c
 	${CC} ${CFLAGS} -c -I . comm/comm.c -o $(BUILD_DIR)comm.o
 
@@ -54,10 +58,10 @@ Command_Parser/libcli.a:
 	(cd Command_Parser; make)
 
 debug: $(BUILD_DIRS) tcp_ip_app
-	${DB} ./bin/tcp_ip_app
+	${DB} ./${BIN_DIR}tcp_ip_app
 
 run: $(BUILD_DIRS) tcp_ip_app
-	./bin/tcp_ip_app
+	./${BIN_DIR}tcp_ip_app
 
 .PHONY: clean
 clean:

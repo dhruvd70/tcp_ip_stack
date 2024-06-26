@@ -10,6 +10,8 @@
 #include "../utils/utils.h"
 #include "../graph/graph.h"
 #include "../gluethread/glthread.h"
+#include "../network/network.h"
+#include "../common.h"
 
 #pragma pack(push,1) //to prevent padding bytes added by compiler
 
@@ -56,6 +58,11 @@ GLTHREAD_TO_STRUCT(arp_glue_to_arp_entry, arp_entry_t, arp_glue);
 #define ETH_FCS(eth_hdr_ptr, payload_size)  \
     (*(unsigned int *)(((char *)(((ethernet_hdr_t *)eth_hdr_ptr)->payload) + payload_size)))
 
+#define IS_ARP_ENTRY_EQUAL(arp_entry_1, arp_entry_2)                                        \
+        (strncmp(arp_entry_1->ip_addr.ip_addr, arp_entry_2->ip_addr.ip_addr, 16) == 0 &&    \
+        strncmp(arp_entry_1->mac_addr.mac_addr, arp_entry_2->mac_addr.mac_addr, 6) == 0 &&  \
+        strncmp(arp_entry_1->out_intf, arp_entry_2->out_intf, INTF_NAME_SIZE) == 0)
+
 
 
 static ethernet_hdr_t* alloc_eth_hdr_with_payload(char *pkt, unsigned int pkt_size)
@@ -71,16 +78,14 @@ static ethernet_hdr_t* alloc_eth_hdr_with_payload(char *pkt, unsigned int pkt_si
     return eth_hdr;
 }
 
-static inline bool_e l2_frame_qualifier_on_interface(interface_t *intf, ethernet_hdr_t *eth_hdr)
+static inline bool_e layer2_frame_rx_qualifier(interface_t *intf, ethernet_hdr_t *eth_hdr)
 {
-    if(!IS_INTF_L3_MODE(intf)) {
-        return FALSE;
+    if(!intf->intf_nw_cfg.b_ip_addr_cfg) {
+        return TRUE;
     }
 
     //accept if dest MAC addr matches with MAC addr of intf
-    if(memcmp(intf->intf_nw_cfg.mac_addr.mac_addr,
-              eth_hdr->dest_mac_addr.mac_addr, 
-              sizeof(mac_addr_t)) == 0) {
+    if(memcmp(IF_MAC(intf), eth_hdr->dest_mac_addr.mac_addr, sizeof(mac_addr_t)) == 0) {
         return TRUE;
     }
 

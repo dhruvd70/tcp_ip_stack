@@ -13,12 +13,12 @@
 
 typedef struct ip_addr_
 {
-    char ip_addr[IP_ADDR_SIZE];
+    unsigned char ip_addr[IP_ADDR_SIZE];
 }ip_addr_t;
 
 typedef struct mac_addr_
 {
-    char mac_addr[MAC_ADDR_SIZE];
+    unsigned char mac_addr[MAC_ADDR_SIZE];
 }mac_addr_t;
 
 //forward declaration
